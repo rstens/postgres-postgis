@@ -13,27 +13,27 @@
 # limitations under the License.
 #
 ---
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
-  name: patroni
+  name: postgres-postgis build
 labels:
   app: ${NAME}
   phase: build
   app.kubernetes.io/component: database
-  app.kubernetes.io/name: patroni
+  app.kubernetes.io/name: postgres-postgis
   app.kubernetes.io/managed-by: template
   app.kubernetes.io/version: "${PG_VERSION}"
 parameters:
   - name: NAME
-    value: "patroni-postgres"
+    value: "postgres-postgis"
   - name: OUT_VERSION
     description: Ouput version
     value: "13.1"
   - name: GIT_URI
-    value: "https://github.com/bcgov/biohubbc.git"
+    value: "https://github.com/rstens/postgres-postgis.git"
   - name: GIT_REF
-    value: "dev"
+    value: "master"
   - name: PG_VERSION
     value: "13.1"
 objects:
@@ -81,7 +81,6 @@ objects:
         git:
           ref: ${GIT_REF}
           uri: ${GIT_URI}
-          path: "containers/Postgres 13.1"
         type: Git
       strategy:
         dockerStrategy:
