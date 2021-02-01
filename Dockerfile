@@ -30,7 +30,6 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN echo 'Make sure we have a en_US.UTF-8 locale available' \
     && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
-    && pip3 --isolated --no-cache-dir install psycopg2-binary \
     && echo 'Setting permissions for OpenShift' \
     && chmod 664 /etc/passwd \
     && echo 'Cleaning up' \
