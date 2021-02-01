@@ -30,8 +30,12 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN echo 'Make sure we have a en_US.UTF-8 locale available' \
     && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
+    && sed -i "s|/var/lib/postgresql.*|$PGHOME:/bin/bash|" /etc/passwd \
     && echo 'Setting permissions for OpenShift' \
     && chmod 664 /etc/passwd \
+    && chgrp -R 0 $PGHOME \
+    && chown -R 26 $PGHOME \
+    && chmod -R 775 $PGHOME \
     && echo 'Cleaning up' \
     && apt-get remove -y git build-essential python3-dev python3-pip python3-wheel python3-setuptools \
     && apt-get autoremove -y \
