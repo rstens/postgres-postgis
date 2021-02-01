@@ -9,7 +9,7 @@ ENV PORT 5432
 
 ENV LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 
-ARG PGHOME=/var/lib/pgsql
+ARG PGHOME=/var/lib/postgresql
 
 RUN export DEBIAN_FRONTEND=noninteractive \
     && set -x 
@@ -47,7 +47,7 @@ COPY contrib/root /
 RUN mkdir -p /docker-entrypoint-initdb.d
 COPY create_postgis.sql /docker-entrypoint-initdb.d/postgis.sql
 
-VOLUME ["/var/lib/pgsql/data", "/var/run/postgresql"]
+VOLUME ["/var/lib/postgresql/data", "/var/run/postgresql"]
 USER 26
 
 EXPOSE ${PORT}
