@@ -13,8 +13,6 @@ ENV LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 \
 
 COPY fix-permissions /usr/libexec/fix-permissions
 
-RUN adduser 26
-
 ARG PGHOME=/var/lib/postgresql
 
 RUN export DEBIAN_FRONTEND=noninteractive \
