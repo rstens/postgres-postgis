@@ -9,6 +9,8 @@ ENV PORT 5432
 
 ENV LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 
+COPY fix-permissions /usr/libexec/fix-permissions
+
 ARG PGHOME=/var/lib/postgresql
 
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -31,6 +33,10 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN echo 'Make sure we have a en_US.UTF-8 locale available' \
     && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
+    test "$(id postgres)" = "uid=26(postgres) gid=26(postgres) groups=26(postgres)" && \
+    mkdir -p /var/lib/pgsql/data && \
+    /usr/libexec/fix-permissions /var/lib/pgsql && \
+    /usr/libexec/fix-permissions /var/run/postgresql \
     && sed -i "s|/var/lib/postgresql.*|$PGHOME:/bin/bash|" /etc/passwd \
     && echo 'Cleaning up' \
     && apt-get remove -y git build-essential \
@@ -44,7 +50,7 @@ RUN mkdir -p /docker-entrypoint-initdb.d
 COPY create_postgis.sql /docker-entrypoint-initdb.d/postgis.sql
 
 VOLUME ["/var/lib/postgresql/data", "/var/run/postgresql"]
-USER postgres
+USER 26
 
 EXPOSE ${PORT}
 
