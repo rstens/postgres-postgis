@@ -36,15 +36,18 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN echo 'Make sure we have a en_US.UTF-8 locale available' \
     && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 
-RUN test "$(id postgres)" = "uid=26(postgres) gid=26(postgres) groups=26(postgres)"
-RUN /usr/libexec/fix-permissions /var/lib/postgresql
-RUN /usr/libexec/fix-permissions /var/run/postgresql
-
 RUN echo 'Cleaning up' \
     && apt-get remove -y git build-essential \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* /root/.cache
+
+USER 26
+RUN chown -R 26:0 /var/lib/postgresql
+RUN chown -R 26:0 /var/lib/postgresql
+RUN test "$(id postgres)" = "uid=26(postgres) gid=26(postgres) groups=26(postgres)"
+RUN /usr/libexec/fix-permissions /var/lib/postgresql
+RUN /usr/libexec/fix-permissions /var/run/postgresql
 
 COPY contrib/root /
 # copy postgis init script to docker init directory
@@ -52,7 +55,6 @@ RUN mkdir -p /docker-entrypoint-initdb.d
 COPY create_postgis.sql /docker-entrypoint-initdb.d/postgis.sql
 
 VOLUME ["/var/lib/postgresql/data", "/var/run/postgresql"]
-USER 26
 
 EXPOSE ${PORT}
 
