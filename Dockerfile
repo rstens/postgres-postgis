@@ -32,13 +32,13 @@ RUN apt-get -qq clean
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN echo 'Make sure we have a en_US.UTF-8 locale available' \
-    && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
-    test "$(id postgres)" = "uid=26(postgres) gid=26(postgres) groups=26(postgres)" && \
-    mkdir -p /var/lib/pgsql/data && \
-    /usr/libexec/fix-permissions /var/lib/postgresql && \
-    /usr/libexec/fix-permissions /var/run/postgresql \
-    && sed -i "s|/var/lib/postgresql.*|$PGHOME:/bin/bash|" /etc/passwd \
-    && echo 'Cleaning up' \
+    && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+
+RUN test "$(id postgres)" = "uid=26(postgres) gid=26(postgres) groups=26(postgres)" \
+    && /usr/libexec/fix-permissions /var/lib/postgresql \
+    && /usr/libexec/fix-permissions /var/run/postgresql
+
+RUN echo 'Cleaning up' \
     && apt-get remove -y git build-essential \
     && apt-get autoremove -y \
     && apt-get clean -y \
