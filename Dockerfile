@@ -42,9 +42,8 @@ RUN echo 'Cleaning up' \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* /root/.cache
 
-RUN chmod -R 777 /var/lib/postgresql
-RUN chmod -R 777 /var/run/postgresql
-USER 26
+# RUN chmod -R 777 /var/lib/postgresql
+# RUN chmod -R 777 /var/run/postgresql
 
 COPY contrib/root /
 # copy postgis init script to docker init directory
@@ -56,4 +55,3 @@ VOLUME ["/var/lib/postgresql/data", "/var/run/postgresql"]
 EXPOSE ${PORT}
 
 CMD ["postgres"]
-
