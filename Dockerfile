@@ -43,11 +43,8 @@ RUN echo 'Cleaning up' \
     && rm -rf /var/lib/apt/lists/* /root/.cache
 
 USER 26
-RUN chown -R 26:0 /var/lib/postgresql
-RUN chown -R 26:0 /var/lib/postgresql
-RUN test "$(id postgres)" = "uid=26(postgres) gid=26(postgres) groups=26(postgres)"
-RUN /usr/libexec/fix-permissions /var/lib/postgresql
-RUN /usr/libexec/fix-permissions /var/run/postgresql
+RUN chmod -R 777 /var/lib/postgresql
+RUN chmod -R 777 /var/run/postgresql
 
 COPY contrib/root /
 # copy postgis init script to docker init directory
