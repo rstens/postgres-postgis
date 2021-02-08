@@ -1,4 +1,4 @@
-FROM postgres:13.1
+FROM postgres:12.5
 
 LABEL BioHubBC Postgres
 
@@ -25,7 +25,7 @@ RUN apt-get -qq install -y --no-install-recommends postgresql-$PG_MAJOR-postgis-
 RUN apt-get -qq install -y --no-install-recommends postgresql-$PG_MAJOR-pgrouting
 RUN apt-get -qq install -y --no-install-recommends postgresql-$PG_MAJOR-pgrouting-scripts
 RUN apt-get -qq install -y --no-install-recommends postgresql-server-dev-$PG_MAJOR
-RUN apt-get -qq install -y --no-install-recommends pgbadger pg-activity
+RUN apt-get -qq install -y --no-install-recommends pgbadger pg-activity wget nano unzip
 RUN apt-get -qq purge -y --auto-remove postgresql-server-dev-$PG_MAJOR
 RUN apt-get -qq autoremove -y
 RUN apt-get -qq clean
