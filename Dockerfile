@@ -42,9 +42,6 @@ RUN echo 'Cleaning up' \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* /root/.cache
 
-# RUN chmod -R 777 /var/lib/postgresql
-# RUN chmod -R 777 /var/run/postgresql
-
 COPY contrib/root /
 # copy postgis init script to docker init directory
 RUN mkdir -p /docker-entrypoint-initdb.d
