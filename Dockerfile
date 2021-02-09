@@ -46,6 +46,8 @@ COPY contrib/root /
 # copy postgis init script to docker init directory
 RUN mkdir -p /docker-entrypoint-initdb.d
 COPY create_postgis.sql /docker-entrypoint-initdb.d/postgis.sql
+RUN bash /usr/libexec/fix-permissions /var/lib/postgresql/data
+RUN bash /usr/libexec/fix-permissions /var/run/postgresql
 
 VOLUME ["/var/lib/postgresql/data", "/var/run/postgresql"]
 
